@@ -833,19 +833,16 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
     }
 }
 
-renderCatalog(100, 'ALL', false)
-
 function changeDisplay(responseSize, category, showOutOfStock){
     document.getElementsByClassName('display-catalog')[0].innerHTML = ''
     renderCatalog(responseSize, category, showOutOfStock)
-
 }
 
-buttonsFilter = document.getElementsByName('Filter')
-buttonsFilter.forEach((button) => {
+document.getElementsByName('Filter').forEach((button) => {
     button.addEventListener('click', () => (changeDisplay(100, button.id , false)))
 })
 
+renderCatalog(100, 'ALL', false)
 
 
 
