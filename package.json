@@ -1,0 +1,11 @@
+{
+  "name": "html-template-viste-y-reuda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "index.html"
+  },
+  "author": "",
+  "license": "ISC"
+}
