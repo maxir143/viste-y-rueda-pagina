@@ -826,14 +826,16 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
                 itemCount ++
             }
         }
-        
     })
+
+    if (itemCount <= 0) {
+        document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
+    }
 }
 
 renderCatalog(100, 'ALL', false)
 
-
-function ajax(responseSize, category, showOutOfStock){
+function changeDisplay(responseSize, category, showOutOfStock){
     document.getElementsByClassName('display-catalog')[0].innerHTML = ''
     renderCatalog(responseSize, category, showOutOfStock)
 
@@ -841,7 +843,7 @@ function ajax(responseSize, category, showOutOfStock){
 
 buttonsFilter = document.getElementsByName('Filter')
 buttonsFilter.forEach((button) => {
-    button.addEventListener('click', () => (ajax(100, button.id , false)))
+    button.addEventListener('click', () => (changeDisplay(100, button.id , false)))
 })
 
 
