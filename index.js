@@ -830,7 +830,7 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
     })
 }
 
-renderCatalog(100, 'ALL', true)
+renderCatalog(100, 'ALL', false)
 
 
 function ajax(responseSize, category, showOutOfStock){
