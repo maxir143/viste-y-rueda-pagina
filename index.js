@@ -1,4 +1,4 @@
-const createCardImgCatalog = (imgSource, titleText, cardText, aHref) => {
+const createCardImgCatalog = (imgSource, titleText, cardText, aHref, sku) => {
     const divCard = document.createElement('div')
     divCard.className = 'card m-3'
     divCard.style = 'width: 18rem;'
@@ -25,7 +25,7 @@ const createCardImgCatalog = (imgSource, titleText, cardText, aHref) => {
 
     const aAddToCart = document.createElement('a')
     aAddToCart.className = 'btn btn-primary'
-    aAddToCart.textContent = 'Mandar mensaje 💬'
+    aAddToCart.textContent = `Preguntar por nº${sku} 💬`
     aAddToCart.href = aHref
     aAddToCart.target = '_blank'
     divCardBody.appendChild(aAddToCart)
@@ -821,7 +821,8 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
                     `${imgFolderCatalog}${product.sku}.jpg`,
                     categoriesNames[product.categoryName],
                     sizesText,
-                    `${urlBaseWhatsApp}Me interesa el jersey (modelo <${product.sku}> ${sizesText})` 
+                    `${urlBaseWhatsApp}Me interesa el jersey (modelo <${product.sku}> ${sizesText})`,
+                    product.sku
                 )
                 itemCount ++
             }
