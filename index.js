@@ -1,4 +1,4 @@
-const createCardImgCatalog = (imgSource, titleText, cardText, aHref, sku) => {
+const createCardImgCatalog = (imgSource, titleText, cardText, aHref, sku, price) => {
     const divCard = document.createElement('div')
     divCard.className = 'card m-3'
     divCard.style = 'width: 18rem;'
@@ -17,10 +17,13 @@ const createCardImgCatalog = (imgSource, titleText, cardText, aHref, sku) => {
     h5CardTitle.textContent = titleText
     divCardBody.appendChild(h5CardTitle)
 
-
     const pCardText = document.createElement('p')
     pCardText.className = 'card-text'
-    pCardText.textContent = cardText
+    if (price) {
+        pCardText.textContent = `$${price} ${cardText}`
+    }else{
+        pCardText.textContent = `${cardText}`
+    }
     divCardBody.appendChild(pCardText)
 
     const aAddToCart = document.createElement('a')
@@ -83,6 +86,7 @@ const imgFolderCatalog = './images/catalog/'
 
 const urlBaseWhatsApp = 'https://wa.me/+525525507474?text='
 
+// const urlAPI = 'http://localhost:3001'
 const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
 
 const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
@@ -106,7 +110,8 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
                         categoriesNames[product.categoryName],
                         sizesText,
                         `${urlBaseWhatsApp}Me interesa el jersey (modelo <${product.sku}> ${sizesText})`,
-                        product.sku
+                        product.sku,
+                        product.price
                     )
                     itemCount ++
                 }
