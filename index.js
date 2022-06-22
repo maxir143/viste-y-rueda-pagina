@@ -86,8 +86,8 @@ const imgFolderCatalog = './images/catalog/'
 
 const urlBaseWhatsApp = 'https://wa.me/+525525507474?text='
 
-// const urlAPI = 'http://localhost:3001'
-const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
+const urlAPI = 'http://localhost:3001'
+//const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
 
 const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
     const products = fetch(`${urlAPI}/products`)
@@ -123,7 +123,7 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
     })
 }
 
-function changeDisplay(responseSize, category, showOutOfStock){
+const changeDisplay = (responseSize, category, showOutOfStock) => {
     document.getElementsByClassName('display-catalog')[0].innerHTML = ''
     renderCatalog(responseSize, category, showOutOfStock)
 }
@@ -132,7 +132,7 @@ document.getElementsByName('Filter').forEach((button) => {
     button.addEventListener('click', () => (changeDisplay(100, button.id , false)))
 })
 
-renderCatalog(100, 'ALL', false)
+changeDisplay(100, 'ALL', false)
 
 
 
