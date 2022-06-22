@@ -86,8 +86,8 @@ const imgFolderCatalog = './images/catalog/'
 
 const urlBaseWhatsApp = 'https://wa.me/+525525507474?text='
 
-const urlAPI = 'http://localhost:3001'
-//const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
+//const urlAPI = 'http://localhost:3001'
+const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
 
 const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
     const products = fetch(`${urlAPI}/products`)
