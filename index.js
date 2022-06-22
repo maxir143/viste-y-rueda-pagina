@@ -6,6 +6,7 @@ const createCardImgCatalog = (imgSource, titleText, cardText, aHref, sku, price)
     const cardImgTop = document.createElement('img')
     cardImgTop.className = 'card-img-top'
     cardImgTop.src = imgSource
+    cardImgTop.loading = 'lazy'
     divCard.appendChild(cardImgTop)
 
     const divCardBody = document.createElement('div')
