@@ -94,7 +94,7 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
     const products = fetch(`${urlAPI}/products`)
     .then((response) => response.json())
     .then((json) => {
-        console.log(json)
+        document.getElementsByClassName('display-catalog')[0].innerHTML = ''
         const products = json
         let itemCount = 0
         products.forEach( product => {
@@ -125,7 +125,6 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
 }
 
 const changeDisplay = (responseSize, category, showOutOfStock) => {
-    document.getElementsByClassName('display-catalog')[0].innerHTML = ''
     renderCatalog(responseSize, category, showOutOfStock)
 }
 
