@@ -107,7 +107,7 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
                     }
                     const sizesText = getSizesText(product.stock)
                     createCardImgCatalog(
-                        `${imgFolderCatalog}${product.sku}.jpg`,
+                        `${imgFolderCatalog}${product.sku}-min.jpg`,
                         categoriesNames[product.categoryName],
                         sizesText,
                         `${urlBaseWhatsApp}Me interesa el jersey (modelo <${product.sku}> ${sizesText})`,
