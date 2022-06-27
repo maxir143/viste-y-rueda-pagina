@@ -6,11 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
     <title>Viste y Rueda</title>
 </head>
 <body>
+    <button class="float" name="shopingCart" data-bs-toggle="modal" data-bs-target="#shopingCartModal"><i class="bi bi-basket"> <h6 name="shopingCartCount">0</h6></i></button>
+        <div class="modal fade" id="shopingCartModal" tabindex="-1" >
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Carrito de compras</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column modal-body" id="modalCartBody">
+                    Sin articulos ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="sendWhatsApp"><i class="bi bi-whatsapp"></i> Mandar pedido a WhatsApp</button>
+                </div>
+            </div>
+            </div>
+        </div>
     <div class="root">
-        <nav class="navbar navbar-expand-lg bg-light">
+        <nav class="navbar navbar-expand-xl bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="">Viste y rueda</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,8 +41,8 @@
                         <li class="nav-item m-auto"><a class="nav-link" name="Filter" id="JCU" href="#display-catalog">Jerseys unisex</a></li>
                         <li class="nav-item m-auto"><a class="nav-link" name="Filter" id="JCM" href="#display-catalog">Jerseys de mujer</a></li>
                         <li class="nav-item m-auto"><a class="nav-link" name="Filter" id="BIB" href="#display-catalog">Licras</a></li>
-                        <li class="nav-item m-auto"><a class="nav-link" name="Filter" id="IMP" href="#display-catalog">Impermeables</a></li>
-                        <li class="nav-item m-auto"><a class="nav-link" name="Filter" id="CAP" href="#display-catalog">Caps</a></li>
+                        <!--<li class="nav-item m-auto"><a class="nav-link" name="Filter" id="IMP" href="#display-catalog">Impermeables</a></li>--> 
+                        <!--<li class="nav-item m-auto"><a class="nav-link" name="Filter" id="CAP" href="#display-catalog">Caps</a></li>--> 
                         <li class="nav-item m-auto"><a class="nav-link" name="Filter" id="RV" href="#display-catalog">Rompevientos</a></li>
                         <li class="nav-item m-auto"><a class="nav-link" name="Filter" id="BL" href="#display-catalog">Capa Base</a></li>
                     </ul>
