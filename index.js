@@ -49,7 +49,7 @@ const createShopingItem = (item) => {
 
     const bSC = document.createElement('button')
     bSC.className = 'btn btn-danger w-25'
-    bSC.onclick = () => delCartItem([sku, size])
+    bSC.onclick = () => delCartItem(item)
     divShopingCart.appendChild(bSC)
 
     const iconSC = document.createElement('i')
@@ -85,6 +85,7 @@ const delCartItem = (item) => {
             document.getElementById(`${sku}_${size}`).className = 'btn btn-outline-success btn-sm flex-fill mx-1'
         }
     }
+    document.getElementsByName('shopingCartCount')[0].textContent = shoppingCart.size
     renderShopingCart(shoppingCart)
 }
 
@@ -100,14 +101,14 @@ const addToCart = (item) => {
     }
     shoppingCart.set(sku, newItem)   
     document.getElementById(`${sku}_${size}`).setAttribute('disabled', '')
-    document.getElementById(`${sku}_${size}`).className = 'btn btn-outline-secondary btn-sm flex-fill mx-1'
+    document.getElementById(`${sku}_${size}`).className = 'btn btn-secondary btn-sm flex-fill mx-1'
     document.getElementsByName('shopingCartCount')[0].textContent = shoppingCart.size
 
     renderShopingCart(shoppingCart)
 }
 
 const createCardImgCatalog = (product) => {
-    const {sku, category, categoryName, price, stock} = product
+    const {sku, categoryName, price, stock} = product
 
     const divCard = document.createElement('div')
     divCard.className = 'card m-3'
@@ -125,7 +126,7 @@ const createCardImgCatalog = (product) => {
 
     const h5CardTitle = document.createElement('h5')
     h5CardTitle.className = 'card-title'
-    h5CardTitle.textContent = categoriesNames[product.categoryName]
+    h5CardTitle.textContent = categoriesNames[categoryName]
     divCardBody.appendChild(h5CardTitle)
 
     const pCardText = document.createElement('p')
@@ -142,13 +143,21 @@ const createCardImgCatalog = (product) => {
         pSizeButtons.textContent = 'Agregar al carrito:'
         divCard.appendChild(pSizeButtons)
 
-        for (const [key, value] of Object.entries(sizes)){
+        for (const [size, value] of Object.entries(sizes)){
             const aAddToCart = document.createElement('button')
-            aAddToCart.className = 'btn btn-outline-success btn-sm flex-fill mx-1'
-            aAddToCart.textContent = key
+            var classes = 'btn btn-outline-success btn-sm flex-fill mx-1'
+            if (shoppingCart.has(sku)){
+                const currentItem = shoppingCart.get(sku)
+                if (currentItem.has(size)) {
+                    var classes = 'btn btn-secondary btn-sm flex-fill mx-1'
+                    aAddToCart.setAttribute('disabled', '')
+                }
+            }
+            aAddToCart.className = classes
+            aAddToCart.textContent = size
             aAddToCart.name = 'sizeButton'
-            aAddToCart.id = `${sku}_${key}`
-            aAddToCart.onclick = () => addToCart([sku, key])
+            aAddToCart.id = `${sku}_${size}`
+            aAddToCart.onclick = () => addToCart([sku, size])
             if (value > 0) divSizeButtons.appendChild(aAddToCart)  
         }
         divCard.appendChild(divSizeButtons)
