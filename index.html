@@ -28,7 +28,7 @@
             </div>
             </div>
         </div>
-    <div class="root mt-5">
+    <div class="root">
         <nav class="navbar fixed-top navbar-expand-xl bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="">Viste y rueda</a>
@@ -50,8 +50,23 @@
                 </div>
             </div>
         </nav>
-        <div class="d-flex flex-column">
-            <div class="d-flex flex-wrap justify-content-center display-catalog" id="display-catalog">
+        <div class="d-flex flex-column pt-5" id="display-catalog">
+            <div class="dropdown mt-3 align-self-center">
+                <button class="btn btn-secondary dropdown-toggle" id="dropdowSize" data-bs-toggle="dropdown">
+                    Todas las tallas
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdowSize">
+                    <li><button class="dropdown-item" name="size-selector" id="ALL">Todas las tallas</button></li>
+                    <li><button class="dropdown-item" name="size-selector" id="xxs">XXS</button></li>
+                    <li><button class="dropdown-item" name="size-selector" id="xs">XS</button></li>
+                    <li><button class="dropdown-item" name="size-selector" id="s">S</button></li>
+                    <li><button class="dropdown-item" name="size-selector" id="m">M</button></li>
+                    <li><button class="dropdown-item" name="size-selector" id="l">L</button></li>
+                    <li><button class="dropdown-item" name="size-selector" id="xl">XL</button></li>
+                    <li><button class="dropdown-item" name="size-selector" id="xxl">XXL</button></li>
+                </ul>
+              </div>
+            <div class="d-flex flex-wrap justify-content-center display-catalog">
                 <div class="d-flex justify-content-center m-5 p-5">
                     <div class="spinner-border" role="status">
                       <span class="visually-hidden">Loading...</span>

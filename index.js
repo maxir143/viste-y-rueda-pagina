@@ -3,6 +3,9 @@ const urlBaseWhatsApp = 'https://wa.me/+525525507474?text='
 const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
 const shoppingCart = new Map()
 
+var sizeSelected = 'ALL'
+var categorySelected = 'ALL'
+
 const categoriesNames = {
     'JCU': 'Jersey cilcista unisex',
     'JCM': 'Jersey cilcista mujer',
@@ -177,7 +180,7 @@ const outOfStock = (sizes) => {
 }
 
 
-const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
+const renderCatalog = (maxItems=10, showOutOfStock=false) => {
     const products = fetch(`${urlAPI}/products`)
     .then((response) => response.json())
     .then((json) => {
@@ -187,10 +190,12 @@ const renderCatalog = (maxItems=10, filterBy='ALL', showOutOfStock=false) => {
         
         products.forEach( product => {
             if (maxItems > itemCount ) {
-                if (filterBy == product.category || filterBy == 'ALL'){
+                if (categorySelected == product.category || categorySelected == 'ALL'){
                     if (showOutOfStock == false) {
                         if (outOfStock(product.stock) == true) return
                     }
+                    if (product.stock[sizeSelected] <= 0 && sizeSelected !== 'ALL') return
+
                     createCardImgCatalog(product)
                     itemCount ++
                 }
@@ -207,8 +212,23 @@ const changeDisplay = (responseSize, category, showOutOfStock) => {
     renderCatalog(responseSize, category, showOutOfStock)
 }
 
+const filterSetSize = (size) => {
+    sizeSelected = size
+    changeDisplay(100, false)
+    document.getElementById('dropdowSize').textContent = size != 'ALL' ? size : 'Todas las tallas'
+}
+
+const filterSetCategory = (category) => {
+    categorySelected = category
+    changeDisplay(100, false)
+}
+
 document.getElementsByName('Filter').forEach((button) => {
-    button.addEventListener('click', () => (changeDisplay(100, button.id , false)))
+    button.addEventListener('click', () => (filterSetCategory(button.id)))
+})
+
+document.getElementsByName('size-selector').forEach((button) => {
+    button.addEventListener('click', () => filterSetSize(button.id))
 })
 
 document.getElementById('sendWhatsApp').addEventListener('click', () => {
@@ -223,7 +243,7 @@ document.getElementById('sendWhatsApp').addEventListener('click', () => {
     }
 })
 
-changeDisplay(100, 'ALL', false)
+changeDisplay(100, false)
 
 
 
