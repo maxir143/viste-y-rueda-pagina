@@ -215,7 +215,9 @@ const changeDisplay = (responseSize, category, showOutOfStock) => {
 const filterSetSize = (size) => {
     sizeSelected = size
     changeDisplay(100, false)
-    document.getElementById('dropdowSize').textContent = size != 'ALL' ? size : 'Todas las tallas'
+
+
+    document.getElementById('dropdowSize').textContent = size != 'ALL' ? size.toUpperCase() : 'Todas las tallas'
 }
 
 const filterSetCategory = (category) => {
