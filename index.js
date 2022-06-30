@@ -37,7 +37,7 @@ const createShopingItem = (item) => {
     const [sku, size] = item
 
     const divShopingCart = document.createElement('div')
-    divShopingCart.className = 'd-flex shadow justify-content-between p-2 my-1'
+    divShopingCart.className = 'd-flex shadow justify-content-between p-2 my-1 shopping-item'
 
     const imgSC = document.createElement('img')
     imgSC.className = 'w-25'
@@ -64,14 +64,17 @@ const createShopingItem = (item) => {
 
 const renderShopingCart = (items) => {
     document.getElementById('modalCartBody').innerHTML = ''
-
+    
     items.forEach((stock, sku) => {
         stock.forEach((value, size) => {
             document.getElementById('modalCartBody').appendChild(createShopingItem([sku, size]))
         })
     })
 
-
+    if (document.getElementsByClassName('shopping-item').length === 0){
+        document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
+    }
+    
 }
 
 const delCartItem = (item) => {
@@ -179,7 +182,6 @@ const outOfStock = (sizes) => {
     return true
 }
 
-
 const renderCatalog = (maxItems=10, showOutOfStock=false) => {
     const products = fetch(`${urlAPI}/products`)
     .then((response) => response.json())
@@ -223,6 +225,14 @@ const filterSetSize = (size) => {
 const filterSetCategory = (category) => {
     categorySelected = category
     changeDisplay(100, false)
+
+    document.getElementsByName('Filter').forEach((button) => {
+        if (button.id == category) {
+            button.classList.add('active')
+        }else{
+            button.classList.remove('active')
+        }
+    })
 }
 
 document.getElementsByName('Filter').forEach((button) => {
