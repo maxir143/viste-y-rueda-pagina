@@ -5,6 +5,7 @@ const shoppingCart = new Map()
 
 var sizeSelected = 'ALL'
 var categorySelected = 'ALL'
+var ALL_PRODUCTS = {}
 
 const categoriesNames = {
     'JCU': 'Jersey cilcista unisex',
@@ -183,31 +184,22 @@ const outOfStock = (sizes) => {
 }
 
 const renderCatalog = (maxItems=10, showOutOfStock=false) => {
-    const products = fetch(`${urlAPI}/products`)
-    .then((response) => response.json())
-    .then((json) => {
-        document.getElementsByClassName('display-catalog')[0].innerHTML = ''
-        const products = json
-        let itemCount = 0
-        
-        products.forEach( product => {
-            if (maxItems > itemCount ) {
-                if (categorySelected == product.category || categorySelected == 'ALL'){
-                    if (showOutOfStock == false) {
-                        if (outOfStock(product.stock) == true) return
-                    }
-                    if (product.stock[sizeSelected] <= 0 && sizeSelected !== 'ALL') return
-
-                    createCardImgCatalog(product)
-                    itemCount ++
+    document.getElementsByClassName('display-catalog')[0].innerHTML = ''
+    let itemCount = 0
+    ALL_PRODUCTS.forEach( product => {
+        if (maxItems > itemCount ) {
+            if (categorySelected == product.category || categorySelected == 'ALL'){
+                if (showOutOfStock == false) {
+                    if (outOfStock(product.stock) == true) return
                 }
-            }
-        })
+                if (product.stock[sizeSelected] <= 0 && sizeSelected !== 'ALL') return
 
-        if (itemCount <= 0) {
-            document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
-    }
+                createCardImgCatalog(product)
+                itemCount ++
+            }
+        }
     })
+    if (itemCount <= 0) document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
 }
 
 const changeDisplay = (responseSize, category, showOutOfStock) => {
@@ -255,7 +247,13 @@ document.getElementById('sendWhatsApp').addEventListener('click', () => {
     }
 })
 
-changeDisplay(100, false)
+const fetchProducts =  fetch(`${urlAPI}/products`)
+.then((response) => response.json())
+.then((json) => {
+    ALL_PRODUCTS = json
+    changeDisplay(100, false)
+})
+
 
 
 
