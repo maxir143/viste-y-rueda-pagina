@@ -161,7 +161,7 @@ const createCardImgCatalog = (product) => {
                 }
             }
             aAddToCart.className = classes
-            aAddToCart.textContent = size
+            aAddToCart.textContent = size.toUpperCase()
             aAddToCart.name = 'sizeButton'
             aAddToCart.id = `${sku}_${size}`
             aAddToCart.onclick = () => addToCart([sku, size])
@@ -193,7 +193,6 @@ const renderCatalog = (maxItems=10, showOutOfStock=false) => {
                     if (outOfStock(product.stock) == true) return
                 }
                 if (product.stock[sizeSelected] <= 0 && sizeSelected !== 'ALL') return
-
                 createCardImgCatalog(product)
                 itemCount ++
             }
