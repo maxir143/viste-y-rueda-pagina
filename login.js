@@ -20,7 +20,6 @@ const requestLogin = () => {
     })
     .then((response) => response.json())
     .then((user) => {
-        console.log(user)
         window.localStorage.setItem('loggedUser', JSON.stringify(user))
         window.location.replace('/admin.html');
     })

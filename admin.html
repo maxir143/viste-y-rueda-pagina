@@ -10,10 +10,77 @@
         <title>Viste y Rueda</title>
     </head>
 <body class="d-flex flex-fill" style="height: 100vh;">
-    <div class="d-inline-flex flex-column m-auto">
-        Estas dentro 
+    <div class="modal" id="modalCatalogEdit" tabindex="-1">
+        <div class="modal-dialog modal-xl d-flex flex-column">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitle"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body d-flex flex-column flex-lg-row w-100" >
+                    <div class="m-auto w-25">
+                        <img class="img-fluid" src="images/catalog/1-min.jpg" id="modalImage">
+                    </div>
+                    <div class="p-2 d-flex flex-fill flex-column justify-content-evenly">
+                        <select class="form-select m-1" aria-label="Categoria" id="categorySelector">
+                            <option value="JCU">JCU</option>
+                            <option value="JCM">JCM</option>
+                            <option value="BIB">BIB</option>
+                            <option value="RV">RV</option>
+                        </select>
+                        <select class="form-select m-1" aria-label="Nombre de la categoria" id="categoryNameSelector">
+                            <option value="JCU">JCU</option>
+                            <option value="JCM">JCM</option>
+                            <option value="CONU">BIB</option>
+                            <option value="BIBP">RV</option>
+                        </select>
+                        <div class="input-group m-1">
+                            <span class="input-group-text">$</span>
+                            <input type="number" value="0" class="form-control" aria-label="Costo">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xxs">XSS</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xxs">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xs">XS</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xs">S</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xs">M</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xs">L</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xs">XL</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xs">XXL</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                        </div>
+                        <div class="input-group input-group-sm m-1" name="stock">
+                            <span class="input-group-text" id="inputGroup-xs">XXXL</span>
+                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                        </div>
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger">BORRAR</button>
+                    <button type="button" class="btn btn-primary">ACTUALIZAR</button>
+                </div>
+            </div>
+        </div>
     </div>
-    
+    <div class="d-flex flex-wrap justify-content-center" id="adminCatalog">
+    </div>
 </body>
-<script type="text/javascript" src="admin.js"></script>
+<script type="module" src="admin.js"></script>
 </html>
