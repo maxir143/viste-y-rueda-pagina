@@ -36,6 +36,20 @@ const CATEGORIES = {
 
 const { token, username } = userToken
 
+const sendAlert = (message) => {
+    const Alert = document.createElement('div')
+    Alert.className = 'alert alert-success alert-dismissible fade show'
+    Alert.textContent = message
+
+    const Alertbutton = document.createElement('button')
+    Alertbutton.className = 'btn-close'
+    Alertbutton.setAttribute('data-bs-dismiss', 'alert')
+
+    Alert.appendChild(Alertbutton)
+
+    document.getElementById('divAlert').appendChild(Alert)
+}
+
 const createAdminCatalogCard = (product) => {
     const {sku} = product
 
@@ -142,6 +156,7 @@ const sendData = () => {
         if (json.hasOwnProperty('error')){
             console.log(json)
         }else{
+            sendAlert('Guardado')
             ALL_PRODUCTS[json.sku] = json
         }
         aupdateButton.textContent = 'ACTUALIZAR'
