@@ -76,8 +76,8 @@ const createAdminCatalogCard = (product) => {
 }
 
 const renderModalForm = (id) => {
+    getToken()
     const {sku, categoryName, category, price, stock} = ALL_PRODUCTS[id]
-
     document.getElementById('modalTitle').textContent = `Modelo ${sku}`
     document.getElementById('modalImage').src = `${imgFolderCatalog}${id}-min.jpg`
     document.getElementById('modalPrice').value = price
@@ -117,10 +117,20 @@ const renderModalForm = (id) => {
     })
 }
 
+const getToken = () => {
+    try {
+        return JSON.parse(window.localStorage.getItem('loggedUser')).token
+    } catch {
+        location.reload(true)
+    }
+}
+
 const sendData = () => {
     const aupdateButton = document.getElementById('modalUpdateButton')
-    const {token} = JSON.parse(window.localStorage.getItem('loggedUser')) 
+    const token = getToken()
 
+    console.log()
+    
     aupdateButton.textContent = ''
     aupdateButton.classList.add('spinner-grow')
     aupdateButton.classList.add('disabled')
