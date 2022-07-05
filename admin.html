@@ -10,16 +10,16 @@
         <title>Viste y Rueda</title>
     </head>
 <body class="d-flex flex-fill flex-column" style="height: 100vh;">
-    <div class="fixed-top p-2" id="divAlert"></div>
+    <div class="fixed-top p-2" id="divAlert" style="z-index: 10000;"></div>
     <div class="m-auto w-25 pt-2">
-        <button class="btn btn-success w-100">Nuevo Articulo</button>
+        <button class="btn btn-success w-100" id="newProductButton" data-bs-target="#modalCatalogEdit" data-bs-toggle="modal">Nuevo Articulo</button>
     </div>
     <div class="modal" id="modalCatalogEdit" tabindex="-1">
         <div class="modal-dialog modal-xl d-flex flex-column">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modalTitle"></h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="btnDismiss"></button>
                 </div>
                 <div class="modal-body d-flex flex-column flex-lg-row w-100" >
                     <div class="m-auto w-25">
@@ -27,7 +27,7 @@
                     </div>
                     <div class="p-2 d-flex flex-fill flex-column justify-content-evenly">
                         <div class="input-group input-group-sm m-1">
-                            <span class="input-group-text w-25" id="basic-addon1">SKU</span>
+                            <span class="input-group-text w-25" >SKU</span>
                             <input type="text" class="form-control " disabled placeholder="sku" id="modalSKU">
                         </div>
 
@@ -80,8 +80,9 @@
                     </div> 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger">BORRAR</button>
-                    <button type="button" class="btn btn-primary" id="modalUpdateButton">ACTUALIZAR</button>
+                    <button type="button" class="btn btn-danger" id="modalDeleteButton" >BORRAR</button>
+                    <button type="button" class="btn btn-primary" id="modalPutButton">ACTUALIZAR</button>
+                    <button type="button" class="btn btn-success" id="modalPostButton">PUBLICAR</button>
                 </div>
             </div>
         </div>

@@ -36,9 +36,9 @@ const CATEGORIES = {
 
 const { token, username } = userToken
 
-const sendAlert = (message) => {
+const sendAlert = (message, type) => {
     const Alert = document.createElement('div')
-    Alert.className = 'alert alert-success alert-dismissible fade show'
+    Alert.className = `alert alert-${type} alert-dismissible fade show`
     Alert.textContent = message
 
     const Alertbutton = document.createElement('button')
@@ -77,7 +77,22 @@ const createAdminCatalogCard = (product) => {
 
 const renderModalForm = (id) => {
     getToken()
-    const {sku, categoryName, category, price, stock} = ALL_PRODUCTS[id]
+    let sku = 0
+    let categoryName = 'JCM'
+    let category = 'JCM'
+    let price = 0
+    let stock = {xxs:0,xs:0,s:0,m:0,l:0,xl:0,xxl:0,xxxl:0}
+
+    document.getElementById('modalSKU').removeAttribute('disabled', '')
+    document.getElementById('modalDeleteButton').value = id
+
+    if (id) {
+        ({sku, categoryName, category, price, stock} = ALL_PRODUCTS[id])
+        document.getElementById('modalSKU').setAttribute('disabled', '')
+    }
+
+    console.log(sku)
+    
     document.getElementById('modalTitle').textContent = `Modelo ${sku}`
     document.getElementById('modalImage').src = `${imgFolderCatalog}${id}-min.jpg`
     document.getElementById('modalPrice').value = price
@@ -125,16 +140,11 @@ const getToken = () => {
     }
 }
 
-const sendData = () => {
-    const aupdateButton = document.getElementById('modalUpdateButton')
+const sendData = (method, buttonId) => {
+    const aupdateButton = document.getElementById(buttonId)
     const token = getToken()
-
-    console.log()
     
-    aupdateButton.textContent = ''
-    aupdateButton.classList.add('spinner-grow')
     aupdateButton.classList.add('disabled')
-    aupdateButton.blur()
 
     const item = JSON.stringify({
         "sku": document.getElementById('modalSKU').value,
@@ -153,7 +163,7 @@ const sendData = () => {
         }
     })
     fetch(`${urlAPI}/products`,{
-        method: 'PUT',
+        method: method,
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -165,13 +175,33 @@ const sendData = () => {
         console.log(json)
         if (json.hasOwnProperty('error')){
             console.log(json)
+            sendAlert('Error al guardar', 'danger')
         }else{
-            sendAlert('Guardado')
+            sendAlert('Guardado correctamente', 'success')
             ALL_PRODUCTS[json.sku] = json
         }
-        aupdateButton.textContent = 'ACTUALIZAR'
-        aupdateButton.classList.remove('spinner-grow')
+
         aupdateButton.classList.remove('disabled')
+    })
+}
+
+const deleteProduct = (id) => {
+    const token = getToken()
+
+    fetch(`${urlAPI}/products/${id}`,{
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (response.status == 304){
+            return sendAlert('No se encontro el prodcuto', 'warning')
+        }
+        if (response.status == 204){
+            return sendAlert(`Se borro el articulo ${id}`, 'success')
+        }
+
     })
 }
 
@@ -188,4 +218,12 @@ const fetchProducts =  fetch(`${urlAPI}/products`)
     modalButtons.forEach((button) => button.addEventListener('click', () => renderModalForm(button.id)))
 })
 
-document.getElementById('modalUpdateButton').addEventListener('click', () => sendData())
+document.getElementById('newProductButton').addEventListener('click', () => renderModalForm())
+
+document.getElementById('modalPutButton').addEventListener('click', () => sendData('PUT', 'modalPutButton'))
+
+document.getElementById('modalPostButton').addEventListener('click', () => sendData('POST', 'modalPostButton'))
+
+document.getElementById('modalDeleteButton').addEventListener('click', () => deleteProduct(document.getElementById('modalDeleteButton').value))
+
+document.getElementById('btnDismiss').addEventListener('click', () => location.reload())
