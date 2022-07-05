@@ -4,7 +4,7 @@ const userToken = JSON.parse(window.localStorage.getItem('loggedUser'))
 var ALL_PRODUCTS = {}
 
 if (!userToken) {
-    window.location.replace('/login.html');
+    window.location.replace('login.html');
 }
 
 const CATEGORIES_NAMES = {
@@ -41,7 +41,7 @@ const createAdminCatalogCard = (product) => {
 
     const divCard = document.createElement('div')
     divCard.className = 'd-flex flex-column m-1'
-    divCard.style = 'width:20rem'
+    divCard.style = 'width:10rem'
 
     const img = document.createElement('img')
     img.className = 'img-fluid m-1'
@@ -66,6 +66,8 @@ const renderModalForm = (id) => {
 
     document.getElementById('modalTitle').textContent = `Modelo ${sku}`
     document.getElementById('modalImage').src = `${imgFolderCatalog}${id}-min.jpg`
+    document.getElementById('modalPrice').value = price
+    document.getElementById('modalSKU').value = sku
 
     const categorySelector = document.getElementById('categorySelector')
     categorySelector.innerHTML = ''
@@ -95,9 +97,56 @@ const renderModalForm = (id) => {
 
     const stockSelector = document.getElementsByName('stock')
     stockSelector.forEach((element) => {
+        const span = element.getElementsByTagName('span')[0]
+        const input = element.getElementsByTagName('input')[0]
+        input.value = stock[span.textContent.toLocaleLowerCase()]
+    })
+}
 
-        console.log(element.getElementsByTagName('span').textContent)
+const sendData = () => {
+    const aupdateButton = document.getElementById('modalUpdateButton')
+    const {token} = JSON.parse(window.localStorage.getItem('loggedUser')) 
 
+    aupdateButton.textContent = ''
+    aupdateButton.classList.add('spinner-grow')
+    aupdateButton.classList.add('disabled')
+    aupdateButton.blur()
+
+    const item = JSON.stringify({
+        "sku": document.getElementById('modalSKU').value,
+        "category": document.getElementById('categorySelector').value,
+        "categoryName": document.getElementById('categoryNameSelector').value,
+        "price": document.getElementById('modalPrice').value,
+        "stock": {
+        "xxs": document.getElementById('modalXXS').value,
+        "xs": document.getElementById('modalXS').value,
+        "s": document.getElementById('modalS').value,
+        "m": document.getElementById('modalM').value,
+        "l": document.getElementById('modalL').value,
+        "xl": document.getElementById('modalXL').value,
+        "xxl": document.getElementById('modalXXL').value,
+        "xxxl": document.getElementById('modalXXXL').value
+        }
+    })
+    fetch(`${urlAPI}/products`,{
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: item
+    })
+    .then(response => response.json())
+    .then(json => {
+        console.log(json)
+        if (json.hasOwnProperty('error')){
+            console.log(json)
+        }else{
+            ALL_PRODUCTS[json.sku] = json
+        }
+        aupdateButton.textContent = 'ACTUALIZAR'
+        aupdateButton.classList.remove('spinner-grow')
+        aupdateButton.classList.remove('disabled')
     })
 }
 
@@ -113,3 +162,5 @@ const fetchProducts =  fetch(`${urlAPI}/products`)
     const modalButtons = document.getElementsByName('modalButton')
     modalButtons.forEach((button) => button.addEventListener('click', () => renderModalForm(button.id)))
 })
+
+document.getElementById('modalUpdateButton').addEventListener('click', () => sendData())

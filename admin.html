@@ -22,59 +22,62 @@
                         <img class="img-fluid" src="images/catalog/1-min.jpg" id="modalImage">
                     </div>
                     <div class="p-2 d-flex flex-fill flex-column justify-content-evenly">
-                        <select class="form-select m-1" aria-label="Categoria" id="categorySelector">
-                            <option value="JCU">JCU</option>
-                            <option value="JCM">JCM</option>
-                            <option value="BIB">BIB</option>
-                            <option value="RV">RV</option>
-                        </select>
-                        <select class="form-select m-1" aria-label="Nombre de la categoria" id="categoryNameSelector">
-                            <option value="JCU">JCU</option>
-                            <option value="JCM">JCM</option>
-                            <option value="CONU">BIB</option>
-                            <option value="BIBP">RV</option>
-                        </select>
-                        <div class="input-group m-1">
-                            <span class="input-group-text">$</span>
-                            <input type="number" value="0" class="form-control" aria-label="Costo">
+                        <div class="input-group input-group-sm m-1">
+                            <span class="input-group-text w-25" id="basic-addon1">SKU</span>
+                            <input type="text" class="form-control " disabled placeholder="sku" id="modalSKU">
+                        </div>
+
+                        <div class="input-group input-group-sm m-1">
+                            <label class="input-group-text w-25" for="categorySelector">Categoria</label>
+                            <select class="form-select"  id="categorySelector"></select>
+                        </div>
+
+                        <div class="input-group input-group-sm m-1">
+                            <label class="input-group-text w-25" for="categoryNameSelector">Nombre de Categoria</label>
+                            <select class="form-select"  id="categoryNameSelector"></select>
+                        </div>     
+                        
+                        <div class="input-group input-group-sm m-1">
+                            <span class="input-group-text w-25">$</span>
+                            <input type="number" value="0" class="form-control" aria-label="Costo" id="modalPrice">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xxs">XSS</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xxs">
+                            <span class="input-group-text w-25" id="inputGroup-xxs">XXS</span>
+                            <input type="number" value="0" id="modalXXS" class="form-control" aria-describedby="inputGroup-xxs">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xs">XS</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                            <span class="input-group-text w-25" id="inputGroup-xs">XS</span>
+                            <input type="number" value="0" id="modalXS" class="form-control" aria-describedby="inputGroup-xs">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xs">S</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                            <span class="input-group-text w-25" id="inputGroup-xs">S</span>
+                            <input type="number" value="0" id="modalS" class="form-control" aria-describedby="inputGroup-xs">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xs">M</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                            <span class="input-group-text w-25" id="inputGroup-xs">M</span>
+                            <input type="number" value="0" id="modalM" class="form-control" aria-describedby="inputGroup-xs">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xs">L</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                            <span class="input-group-text w-25" id="inputGroup-xs">L</span>
+                            <input type="number" value="0" id="modalL" class="form-control" aria-describedby="inputGroup-xs">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xs">XL</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                            <span class="input-group-text w-25" id="inputGroup-xs">XL</span>
+                            <input type="number" value="0" id="modalXL" class="form-control" aria-describedby="inputGroup-xs">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xs">XXL</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                            <span class="input-group-text w-25" id="inputGroup-xs">XXL</span>
+                            <input type="number" value="0" id="modalXXL" class="form-control" aria-describedby="inputGroup-xs">
                         </div>
                         <div class="input-group input-group-sm m-1" name="stock">
-                            <span class="input-group-text" id="inputGroup-xs">XXXL</span>
-                            <input type="number" value="0" class="form-control" aria-describedby="inputGroup-xs">
+                            <span class="input-group-text w-25" id="inputGroup-xs">XXXL</span>
+                            <input type="number" value="0" id="modalXXXL" class="form-control" aria-describedby="inputGroup-xs">
                         </div>
                     </div> 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger">BORRAR</button>
-                    <button type="button" class="btn btn-primary">ACTUALIZAR</button>
+                    <button type="button" class="btn btn-primary" id="modalUpdateButton">ACTUALIZAR</button>
                 </div>
             </div>
         </div>

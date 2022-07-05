@@ -1,7 +1,7 @@
 const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
 const usertoken = window.localStorage.getItem('loggedUser')
 if (usertoken) {
-    window.location.replace('/admin.html')
+    window.location.replace('admin.html')
 }
 
 const requestLogin = () => {
@@ -21,7 +21,7 @@ const requestLogin = () => {
     .then((response) => response.json())
     .then((user) => {
         window.localStorage.setItem('loggedUser', JSON.stringify(user))
-        window.location.replace('/admin.html');
+        window.location.replace('admin.html');
     })
 }
 
