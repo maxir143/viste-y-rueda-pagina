@@ -1,6 +1,8 @@
-import { imgFolderCatalog, urlAPI, userToken, categories, categoriesNames } from './helpers.js'
+import { imgFolderCatalog, urlAPI, userToken, categories, categoriesNames, validateToken } from './helpers.js'
 
-if (!userToken) {
+validateToken()
+
+if (!userToken()) {
   window.location.replace('login.html')
 }
 
@@ -25,6 +27,7 @@ const createAdminCatalogCard = (product) => {
   const divCard = document.createElement('div')
   divCard.className = 'd-flex flex-column m-1'
   divCard.style = 'width:10rem'
+  divCard.id = `productCard_${sku}`
 
   const img = document.createElement('img')
   img.className = 'img-fluid m-1'
@@ -39,13 +42,16 @@ const createAdminCatalogCard = (product) => {
   modalButton.setAttribute('data-bs-toggle', 'modal')
   modalButton.setAttribute('data-bs-target', '#modalCatalogEdit')
   modalButton.textContent = `Editar modelo ${sku}`
+  modalButton.addEventListener('click', () => renderModalForm(sku))
   divCard.appendChild(modalButton)
 
   document.getElementById('adminCatalog').appendChild(divCard)
+  return divCard
 }
 
 const renderModalForm = (id) => {
-  getToken()
+  validateToken()
+
   let sku = 0
   let categoryName = 'JCM'
   let category = 'JCM'
@@ -64,8 +70,6 @@ const renderModalForm = (id) => {
     document.getElementById('modalPostButton').classList.remove('d-none')
     document.getElementById('modalPutButton').classList.add('d-none')
   }
-
-  console.log(sku)
 
   document.getElementById('modalTitle').textContent = `Modelo ${sku}`
   document.getElementById('modalImage').src = `${imgFolderCatalog}${id}-min.jpg`
@@ -106,17 +110,10 @@ const renderModalForm = (id) => {
   })
 }
 
-const getToken = () => {
-  try {
-    return JSON.parse(window.localStorage.getItem('loggedUser')).token
-  } catch {
-    location.reload(true)
-  }
-}
-
 const sendData = (method, buttonId) => {
+  validateToken()
   const aupdateButton = document.getElementById(buttonId)
-  const token = getToken()
+  const token = userToken()
 
   aupdateButton.classList.add('disabled')
 
@@ -146,20 +143,22 @@ const sendData = (method, buttonId) => {
   })
     .then(response => response.json())
     .then(json => {
-      console.log(json)
+      aupdateButton.classList.remove('disabled')
       if (Object.prototype.hasOwnProperty.call(json, 'error')) {
-        console.log(json)
         sendAlert('Error al guardar', 'danger')
       } else {
+        document.getElementById('btnDismiss').click()
         sendAlert('Guardado correctamente', 'success')
         allProdructs[json.sku] = json
+        if (method === 'POST') {
+          createAdminCatalogCard(json)
+        }
       }
-      aupdateButton.classList.remove('disabled')
     })
 }
 
 const deleteProduct = (id) => {
-  const token = getToken()
+  const token = userToken()
 
   fetch(`${urlAPI}/products/${id}`, {
     method: 'DELETE',
@@ -172,6 +171,8 @@ const deleteProduct = (id) => {
         return sendAlert('No se encontro el prodcuto', 'warning')
       }
       if (response.status === 204) {
+        document.getElementById(`productCard_${id}`).remove()
+        document.getElementById('btnDismiss').click()
         return sendAlert(`Se borro el articulo ${id}`, 'success')
       }
     })
@@ -185,10 +186,6 @@ fetch(`${urlAPI}/products`)
       createAdminCatalogCard(allProdructs[product])
     }
   })
-  .then(() => {
-    const modalButtons = document.getElementsByName('modalButton')
-    modalButtons.forEach((button) => button.addEventListener('click', () => renderModalForm(button.id)))
-  })
 
 document.getElementById('newProductButton').addEventListener('click', () => renderModalForm())
 
@@ -198,4 +195,4 @@ document.getElementById('modalPostButton').addEventListener('click', () => sendD
 
 document.getElementById('modalDeleteButton').addEventListener('click', () => deleteProduct(document.getElementById('modalDeleteButton').value))
 
-document.getElementById('btnDismiss').addEventListener('click', () => location.reload())
+/* document.getElementById('btnDismiss').addEventListener('click', () => location.reload()) */

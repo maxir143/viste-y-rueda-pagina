@@ -1,7 +1,6 @@
 const imgFolderCatalog = './images/catalog/'
 const urlBaseWhatsApp = 'https://wa.me/+525525507474?text='
 const urlAPI = 'https://viste-y-rueda-backend.herokuapp.com'
-const userToken = JSON.parse(window.localStorage.getItem('loggedUser'))
 
 const categoriesNames = {
   JCU: 'Jersey cilcista unisex',
@@ -30,11 +29,37 @@ const categories = {
   BL: 'Capa base'
 }
 
+const logOut = () => {
+  window.localStorage.removeItem('loggedUser')
+  location.reload()
+}
+
+const userToken = () => {
+  try {
+    return JSON.parse(window.localStorage.getItem('loggedUser')).token
+  } catch {
+    logOut()
+  }
+}
+
+const validateToken = async () => {
+  if (userToken() === null) return
+  const token = userToken()
+  await fetch(`${urlAPI}/login/${token}`)
+    .then(response => {
+      const { status } = response
+      if (status === 400) {
+        logOut()
+      }
+    })
+}
+
 export {
   imgFolderCatalog,
   urlBaseWhatsApp,
   urlAPI,
   userToken,
   categoriesNames,
-  categories
+  categories,
+  validateToken
 }
