@@ -234,9 +234,7 @@ document.getElementById('sendWhatsApp').addEventListener('click', () => {
   if (shoppingCart.size) {
     let bodytext = urlBaseWhatsApp.concat('Me interesan los siguientes artículos:  ')
     shoppingCart.forEach((stock, sku) => {
-      stock.forEach((value, size) => {
-        bodytext = bodytext.concat(` n.${sku} talla: ${size}, `)
-      })
+      bodytext = bodytext.concat(` Modelo n.${sku} en talla: ${stock}, `)
     })
     window.open(bodytext.slice(0, -2))
   }
