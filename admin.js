@@ -118,13 +118,27 @@ const renderModalForm = async (id) => {
     input.value = stock[span.textContent.toLocaleLowerCase()]
   })
 }
+/*
+const uploadFile = async (file) => {
+  const storageRef = firestore.storage().ref().child(`images/${file.name}`)
 
-const sendData = (method, buttonId) => {
+  await storageRef.put(file)
+
+  return storageRef
+} */
+
+const sendData = async (method, buttonId) => {
   validateToken()
   const aupdateButton = document.getElementById(buttonId)
   const token = userToken()
-
   aupdateButton.classList.add('disabled')
+
+  /*
+  const imgFile = document.getElementById('modalFile').files[0]
+  if (imgFile) {
+    const imgFileRef = await uploadFile(imgFile)
+    console.log(imgFileRef)
+  } */
 
   const item = JSON.stringify({
     sku: document.getElementById('modalSKU').value,
