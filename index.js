@@ -41,8 +41,10 @@ const createShopingItem = async (item) => {
 
 const shoppingCart = new Map()
 const savedShopingCart = JSON.parse(window.localStorage.getItem('shopingCart'))
-for (const [sku, size] of Object.entries(savedShopingCart)) {
-  shoppingCart.set(sku, size)
+if (savedShopingCart) {
+  for (const [sku, size] of Object.entries(savedShopingCart)) {
+    shoppingCart.set(sku, size)
+  }
 }
 
 const saveShopingCart = (items) => {
