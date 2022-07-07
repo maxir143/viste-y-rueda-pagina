@@ -54,6 +54,12 @@ const validateToken = async () => {
     })
 }
 
+const deleteTimeOut = (element, time) => {
+  setTimeout(() => {
+    element.remove()
+  }, time)
+}
+
 const assignImg = async (id) => {
   var imgPath = `${imgFolderCatalog}${id}-min.jpg`
   await fetch(`${imgFolderCatalog}${id}-min.jpg`, { method: 'HEAD' })
@@ -74,5 +80,6 @@ export {
   categories,
   userToken,
   validateToken,
-  assignImg
+  assignImg,
+  deleteTimeOut
 }

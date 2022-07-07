@@ -1,4 +1,13 @@
-import { imgFolderCatalog, urlAPI, userToken, categories, categoriesNames, validateToken, assignImg } from './helpers.js'
+import { 
+  imgFolderCatalog, 
+  urlAPI, 
+  userToken, 
+  categories, 
+  categoriesNames, 
+  validateToken, 
+  assignImg,
+  deleteTimeOut
+} from './helpers.js'
 
 validateToken()
 
@@ -18,7 +27,9 @@ const sendAlert = (message, type) => {
   Alertbutton.setAttribute('data-bs-dismiss', 'alert')
   Alert.appendChild(Alertbutton)
 
-  document.getElementById('divAlert').appendChild(Alert)
+  const item = document.getElementById('divAlert').appendChild(Alert)
+  deleteTimeOut(item,2000)
+
 }
 
 const createAdminCatalogCard = async (product) => {
