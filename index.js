@@ -2,7 +2,8 @@ import {
   imgFolderCatalog,
   urlBaseWhatsApp,
   urlAPI,
-  categoriesNames
+  categoriesNames,
+  assignImg
 } from './helpers.js'
 
 const shoppingCart = new Map()
@@ -10,15 +11,16 @@ let allProdructs = {}
 let sizeSelected = 'ALL'
 let categorySelected = 'ALL'
 
-const createShopingItem = (item) => {
+const createShopingItem = async (item) => {
   const { sku, size } = item
 
   const divShopingCart = document.createElement('div')
+  divShopingCart.id = `${sku}_cart_${size}`
   divShopingCart.className = 'd-flex shadow justify-content-between p-2 my-1 shopping-item'
 
   const imgSC = document.createElement('img')
   imgSC.className = 'w-25'
-  imgSC.src = `${imgFolderCatalog}${sku}-min.jpg`
+  imgSC.src = await assignImg(sku)
   divShopingCart.appendChild(imgSC)
 
   const h4SC = document.createElement('h4')
@@ -38,19 +40,22 @@ const createShopingItem = (item) => {
   return divShopingCart
 }
 
-const renderShopingCart = (items) => {
-  document.getElementById('modalCartBody').innerHTML = ''
-
-  items.forEach((stock, sku) => {
-    stock.forEach((value, size) => {
-      document.getElementById('modalCartBody').appendChild(createShopingItem({ sku, size }))
-    })
-  })
-
-  if (document.getElementsByClassName('shopping-item').length === 0) {
+const renderShopingCart = async (items) => {
+  if (items.size) {
+    document.getElementById('modalCartBody').innerHTML = ''
+  }else{
     document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
   }
+   items.forEach((stock, sku) => {
+    stock.forEach((value, size) => {
+      createShopingItem({ sku, size })
+      .then(newShopingItem => { 
+        document.getElementById('modalCartBody').appendChild(newShopingItem)
+      })
+      })
+    })
 }
+
 
 const delCartItem = (item) => {
   const { sku, size } = item
@@ -64,10 +69,13 @@ const delCartItem = (item) => {
       }
       document.getElementById(`${sku}_${size}`).removeAttribute('disabled', '')
       document.getElementById(`${sku}_${size}`).className = 'btn btn-outline-success btn-sm flex-fill mx-1'
+      document.getElementById(`${sku}_cart_${size}`).remove()
     }
   }
   document.getElementsByName('shopingCartCount')[0].textContent = shoppingCart.size
-  renderShopingCart(shoppingCart)
+  if (shoppingCart.size === 0) {
+    document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
+  }
 }
 
 const addToCart = (item) => {
@@ -88,7 +96,7 @@ const addToCart = (item) => {
   renderShopingCart(shoppingCart)
 }
 
-const createCardImgCatalog = (product) => {
+const createCardImgCatalog = async (product) => {
   const { sku, categoryName, price, stock } = product
 
   const divCard = document.createElement('div')
@@ -97,7 +105,7 @@ const createCardImgCatalog = (product) => {
 
   const cardImgTop = document.createElement('img')
   cardImgTop.className = 'card-img-top'
-  cardImgTop.src = `${imgFolderCatalog}${sku}-min.jpg`
+  cardImgTop.src = await assignImg(sku)
   cardImgTop.loading = 'lazy'
   divCard.appendChild(cardImgTop)
 

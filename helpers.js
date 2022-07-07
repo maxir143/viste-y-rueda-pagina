@@ -54,12 +54,25 @@ const validateToken = async () => {
     })
 }
 
+const assignImg = async (id) => {
+  var imgPath = `${imgFolderCatalog}${id}-min.jpg`
+  await fetch(`${imgFolderCatalog}${id}-min.jpg`, { method: 'HEAD' })
+  .then(response => {
+    if (response.status !== 200) {
+      imgPath = `${imgFolderCatalog}placeholder-min.jpg`
+    }
+  })
+
+  return imgPath
+}
+
 export {
   imgFolderCatalog,
   urlBaseWhatsApp,
   urlAPI,
-  userToken,
   categoriesNames,
   categories,
-  validateToken
+  userToken,
+  validateToken,
+  assignImg
 }

@@ -1,4 +1,4 @@
-import { imgFolderCatalog, urlAPI, userToken, categories, categoriesNames, validateToken } from './helpers.js'
+import { imgFolderCatalog, urlAPI, userToken, categories, categoriesNames, validateToken, assignImg } from './helpers.js'
 
 validateToken()
 
@@ -21,7 +21,7 @@ const sendAlert = (message, type) => {
   document.getElementById('divAlert').appendChild(Alert)
 }
 
-const createAdminCatalogCard = (product) => {
+const createAdminCatalogCard = async (product) => {
   const { sku } = product
 
   const divCard = document.createElement('div')
@@ -31,7 +31,7 @@ const createAdminCatalogCard = (product) => {
 
   const img = document.createElement('img')
   img.className = 'img-fluid m-1'
-  img.src = `${imgFolderCatalog}${sku}-min.jpg`
+  img.src = await assignImg(sku)
   divCard.appendChild(img)
 
   const modalButton = document.createElement('button')
@@ -49,7 +49,7 @@ const createAdminCatalogCard = (product) => {
   return divCard
 }
 
-const renderModalForm = (id) => {
+const renderModalForm = async (id) => {
   validateToken()
 
   let sku = 0
@@ -72,7 +72,7 @@ const renderModalForm = (id) => {
   }
 
   document.getElementById('modalTitle').textContent = `Modelo ${sku}`
-  document.getElementById('modalImage').src = `${imgFolderCatalog}${id}-min.jpg`
+  document.getElementById('modalImage').src = await assignImg(sku)
   document.getElementById('modalPrice').value = price
   document.getElementById('modalSKU').value = sku
 
@@ -195,4 +195,3 @@ document.getElementById('modalPostButton').addEventListener('click', () => sendD
 
 document.getElementById('modalDeleteButton').addEventListener('click', () => deleteProduct(document.getElementById('modalDeleteButton').value))
 
-/* document.getElementById('btnDismiss').addEventListener('click', () => location.reload()) */
