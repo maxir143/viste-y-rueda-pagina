@@ -6,16 +6,15 @@ import {
   assignImg
 } from './helpers.js'
 
-const shoppingCart = new Map()
 let allProdructs = {}
 let sizeSelected = 'ALL'
 let categorySelected = 'ALL'
 
 const createShopingItem = async (item) => {
-  const { sku, size } = item
+  const { sku, stock } = item
 
   const divShopingCart = document.createElement('div')
-  divShopingCart.id = `${sku}_cart_${size}`
+  divShopingCart.id = `${sku}_cart`
   divShopingCart.className = 'd-flex shadow justify-content-between p-2 my-1 shopping-item'
 
   const imgSC = document.createElement('img')
@@ -24,8 +23,8 @@ const createShopingItem = async (item) => {
   divShopingCart.appendChild(imgSC)
 
   const h4SC = document.createElement('h4')
-  h4SC.className = 'w-25 text-center text-uppercase m-auto'
-  h4SC.textContent = size
+  h4SC.className = 'w-50 text-center text-uppercase m-auto'
+  h4SC.textContent = stock
   divShopingCart.appendChild(h4SC)
 
   const bSC = document.createElement('button')
@@ -40,59 +39,70 @@ const createShopingItem = async (item) => {
   return divShopingCart
 }
 
-console.log(window.localStorage.getItem('shopingCart'))
+const shoppingCart = new Map()
+const savedShopingCart = JSON.parse(window.localStorage.getItem('shopingCart'))
+for (const [sku, size] of Object.entries(savedShopingCart)) {
+  shoppingCart.set(sku, size)
+}
+
+const saveShopingCart = (items) => {
+  window.localStorage.setItem('shopingCart', JSON.stringify(Object.fromEntries(items)))
+}
 
 const renderShopingCart = async (items) => {
   if (items.size) {
     document.getElementById('modalCartBody').innerHTML = ''
+    saveShopingCart(items)
   } else {
     document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
   }
   items.forEach((stock, sku) => {
-    stock.forEach((value, size) => {
-      createShopingItem({ sku, size })
-        .then(newShopingItem => {
-          document.getElementById('modalCartBody').appendChild(newShopingItem)
+    createShopingItem({ sku, stock })
+      .then(newShopingItem => {
+        document.getElementById('modalCartBody').appendChild(newShopingItem)
+        stock.forEach((size) => {
+          document.getElementById(`${sku}_${size}`).setAttribute('disabled', '')
+          document.getElementById(`${sku}_${size}`).className = 'btn btn-secondary btn-sm flex-fill mx-1'
         })
-    })
+      })
   })
+
+  document.getElementsByName('shopingCartCount')[0].textContent = shoppingCart.size
 }
 
 const delCartItem = (item) => {
-  const { sku, size } = item
-  if (shoppingCart.has(sku)) {
-    const skuItems = shoppingCart.get(sku)
-    if (skuItems.has(size)) {
-      skuItems.delete(size)
+  const { sku, stock } = item
+
+  stock.forEach(size => {
+    if (shoppingCart.has(sku)) {
+      const skuItems = shoppingCart.get(sku).filter((each) => each !== size)
       shoppingCart.set(sku, skuItems)
-      if (!skuItems.size) {
+      if (!skuItems.length) {
         shoppingCart.delete(sku)
       }
-      document.getElementById(`${sku}_${size}`).removeAttribute('disabled', '')
-      document.getElementById(`${sku}_${size}`).className = 'btn btn-outline-success btn-sm flex-fill mx-1'
-      document.getElementById(`${sku}_cart_${size}`).remove()
     }
-  }
+    document.getElementById(`${sku}_${size}`).removeAttribute('disabled', '')
+    document.getElementById(`${sku}_${size}`).className = 'btn btn-outline-success btn-sm flex-fill mx-1'
+  })
+  document.getElementById(`${sku}_cart`).remove()
+
   document.getElementsByName('shopingCartCount')[0].textContent = shoppingCart.size
-  if (shoppingCart.size === 0) {
+
+  saveShopingCart(shoppingCart)
+
+  if (!shoppingCart.size) {
     document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
   }
 }
 
 const addToCart = (item) => {
-  const [sku, size] = item
-  const newItem = new Map()
-  newItem.set(size, 1)
+  const { sku, size } = item
+  let skuItems = [size]
   if (shoppingCart.has(sku)) {
-    const oldItems = shoppingCart.get(sku)
-    oldItems.forEach((value, size) => {
-      newItem.set(size, 1)
-    })
+    skuItems = shoppingCart.get(sku)
+    skuItems = [...skuItems, size]
   }
-  shoppingCart.set(sku, newItem)
-  document.getElementById(`${sku}_${size}`).setAttribute('disabled', '')
-  document.getElementById(`${sku}_${size}`).className = 'btn btn-secondary btn-sm flex-fill mx-1'
-  document.getElementsByName('shopingCartCount')[0].textContent = shoppingCart.size
+  shoppingCart.set(sku, skuItems)
 
   renderShopingCart(shoppingCart)
 }
@@ -151,7 +161,7 @@ const createCardImgCatalog = async (product) => {
       aAddToCart.textContent = size.toUpperCase()
       aAddToCart.name = 'sizeButton'
       aAddToCart.id = `${sku}_${size}`
-      aAddToCart.onclick = () => addToCart([sku, size])
+      aAddToCart.onclick = () => addToCart({ sku, size })
       if (value > 0) divSizeButtons.appendChild(aAddToCart)
     }
     divCard.appendChild(divSizeButtons)
@@ -237,4 +247,5 @@ fetch(`${urlAPI}/products`)
   .then((json) => {
     allProdructs = json
     changeDisplay(100, false)
+    renderShopingCart(shoppingCart)
   })
