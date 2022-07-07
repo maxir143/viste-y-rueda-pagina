@@ -1,10 +1,9 @@
-import { 
-  imgFolderCatalog, 
-  urlAPI, 
-  userToken, 
-  categories, 
-  categoriesNames, 
-  validateToken, 
+import {
+  urlAPI,
+  userToken,
+  categories,
+  categoriesNames,
+  validateToken,
   assignImg,
   deleteTimeOut
 } from './helpers.js'
@@ -28,8 +27,7 @@ const sendAlert = (message, type) => {
   Alert.appendChild(Alertbutton)
 
   const item = document.getElementById('divAlert').appendChild(Alert)
-  deleteTimeOut(item,2000)
-
+  deleteTimeOut(item, 2000)
 }
 
 const createAdminCatalogCard = async (product) => {
@@ -205,4 +203,3 @@ document.getElementById('modalPutButton').addEventListener('click', () => sendDa
 document.getElementById('modalPostButton').addEventListener('click', () => sendData('POST', 'modalPostButton'))
 
 document.getElementById('modalDeleteButton').addEventListener('click', () => deleteProduct(document.getElementById('modalDeleteButton').value))
-

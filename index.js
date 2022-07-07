@@ -40,22 +40,23 @@ const createShopingItem = async (item) => {
   return divShopingCart
 }
 
+console.log(window.localStorage.getItem('shopingCart'))
+
 const renderShopingCart = async (items) => {
   if (items.size) {
     document.getElementById('modalCartBody').innerHTML = ''
-  }else{
+  } else {
     document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
   }
-   items.forEach((stock, sku) => {
+  items.forEach((stock, sku) => {
     stock.forEach((value, size) => {
       createShopingItem({ sku, size })
-      .then(newShopingItem => { 
-        document.getElementById('modalCartBody').appendChild(newShopingItem)
-      })
-      })
+        .then(newShopingItem => {
+          document.getElementById('modalCartBody').appendChild(newShopingItem)
+        })
     })
+  })
 }
-
 
 const delCartItem = (item) => {
   const { sku, size } = item
