@@ -99,13 +99,17 @@ const addToCart = (item) => {
 const createCardImgCatalog = async (product) => {
   const { sku, categoryName, price, stock } = product
 
+  const imgSRC = await assignImg(sku)
+
+  if (imgSRC === `${imgFolderCatalog}placeholder-min.jpg`) return
+
   const divCard = document.createElement('div')
   divCard.className = 'card m-3'
   divCard.style = 'width: 18rem;'
 
   const cardImgTop = document.createElement('img')
   cardImgTop.className = 'card-img-top'
-  cardImgTop.src = await assignImg(sku)
+  cardImgTop.src = imgSRC
   cardImgTop.loading = 'lazy'
   divCard.appendChild(cardImgTop)
 
