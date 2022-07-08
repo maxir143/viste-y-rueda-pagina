@@ -8,7 +8,7 @@ import {
   imgFolderCatalog
 } from './helpers.js'
 
-import {uploadFile, getImgUrl} from './firebase.js'
+import { uploadFile, getImgUrl } from './firebase.js'
 
 validateToken()
 
@@ -34,6 +34,7 @@ const sendAlert = (message, type) => {
 
 const createAdminCatalogCard = async (product) => {
   const { sku, img } = product
+  const imgSRC = await getImgUrl(img)
 
   const divCard = document.createElement('div')
   divCard.className = 'd-flex flex-column m-1'
@@ -42,7 +43,7 @@ const createAdminCatalogCard = async (product) => {
 
   const imgCard = document.createElement('img')
   imgCard.className = 'img-fluid m-1'
-  imgCard.src = await getImgUrl(img)
+  imgCard.src = imgSRC
   imgCard.id = `adminCard_${sku}`
   divCard.appendChild(imgCard)
 
@@ -74,7 +75,7 @@ const renderModalForm = async (id) => {
   document.getElementById('modalSKU').removeAttribute('disabled', '')
   document.getElementById('modalDeleteButton').value = id
   document.getElementById('modalImage').src = `${imgFolderCatalog}placeholder-min.jpg`
-  document.getElementById('modalFile').value  = ''
+  document.getElementById('modalFile').value = ''
 
   if (id) {
     ({ sku, categoryName, category, price, stock, img } = allProdructs[id])
@@ -126,19 +127,18 @@ const renderModalForm = async (id) => {
   document.getElementById('modalImage').src = await getImgUrl(img)
 }
 
-
 const sendData = async (method, buttonId) => {
   validateToken()
   const aupdateButton = document.getElementById(buttonId)
   const token = userToken()
   aupdateButton.classList.add('disabled')
-  var imgPath = ''
+  let imgPath = ''
 
   const imgFile = document.getElementById('modalFile').files[0]
   if (imgFile) {
     const imgFileRef = await uploadFile(imgFile)
     imgPath = imgFileRef.fullPath
-  }else {
+  } else {
     imgPath = allProdructs[document.getElementById('modalSKU').value].img
   }
 
@@ -149,7 +149,7 @@ const sendData = async (method, buttonId) => {
     category: document.getElementById('categorySelector').value,
     categoryName: document.getElementById('categoryNameSelector').value,
     price: document.getElementById('modalPrice').value,
-    img : imgPath,
+    img: imgPath,
     stock: {
       xxs: document.getElementById('modalXXS').value,
       xs: document.getElementById('modalXS').value,
@@ -170,7 +170,7 @@ const sendData = async (method, buttonId) => {
     body: item
   })
     .then(response => response.json())
-    .then( async json => {
+    .then(async json => {
       aupdateButton.classList.remove('disabled')
       if (Object.prototype.hasOwnProperty.call(json, 'error')) {
         sendAlert('Error al guardar', 'danger')
@@ -179,7 +179,7 @@ const sendData = async (method, buttonId) => {
         sendAlert('Guardado correctamente', 'success')
         allProdructs[json.sku] = json
         console.log(allProdructs[json.sku])
-        
+
         if (method === 'POST') {
           await createAdminCatalogCard(json)
         }

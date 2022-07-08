@@ -5,7 +5,7 @@ import {
   categoriesNames
 } from './helpers.js'
 
-import {getImgUrl} from './firebase.js'
+import { getImgUrl } from './firebase.js'
 
 let allProdructs = {}
 let sizeSelected = 'ALL'
@@ -13,7 +13,7 @@ let categorySelected = 'ALL'
 
 const createShopingItem = async (item) => {
   const { sku, stock } = item
-  const img = allProdructs[sku].img 
+  const img = allProdructs.filter(product => product.sku == sku)[0].img
 
   const divShopingCart = document.createElement('div')
   divShopingCart.id = `${sku}_cart`
@@ -60,8 +60,8 @@ const renderShopingCart = async (items) => {
   } else {
     document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
   }
-  items.forEach((stock, sku) => {
-    createShopingItem({ sku, stock})
+  await items.forEach((stock, sku) => {
+    return createShopingItem({ sku, stock })
       .then(newShopingItem => {
         document.getElementById('modalCartBody').appendChild(newShopingItem)
         stock.forEach((size) => {
@@ -108,7 +108,7 @@ const addToCart = (item) => {
   }
   shoppingCart.set(sku, skuItems)
 
-  renderShopingCart(shoppingCart)
+  return renderShopingCart(shoppingCart)
 }
 
 const createCardImgCatalog = async (product) => {
@@ -202,20 +202,16 @@ const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
   if (itemCount <= 0) document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
 }
 
-const changeDisplay = (responseSize, category, showOutOfStock) => {
-  renderCatalog(responseSize, category, showOutOfStock)
-}
-
 const filterSetSize = (size) => {
   sizeSelected = size
-  changeDisplay(100, false)
+  renderCatalog(100, false)
 
   document.getElementById('dropdowSize').textContent = size !== 'ALL' ? size.toUpperCase() : 'Todas las tallas'
 }
 
 const filterSetCategory = (category) => {
   categorySelected = category
-  changeDisplay(100, false)
+  renderCatalog(100, false)
 
   document.getElementsByName('Filter').forEach((button) => {
     if (button.id === category) {
@@ -248,6 +244,6 @@ fetch(`${urlAPI}/products`)
   .then((response) => response.json())
   .then((json) => {
     allProdructs = json
-    changeDisplay(100, false)
+    renderCatalog(100, false)
     renderShopingCart(shoppingCart)
   })
