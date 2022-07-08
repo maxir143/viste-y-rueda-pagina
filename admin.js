@@ -4,9 +4,11 @@ import {
   categories,
   categoriesNames,
   validateToken,
-  assignImg,
-  deleteTimeOut
+  deleteTimeOut,
+  imgFolderCatalog
 } from './helpers.js'
+
+import {uploadFile, getImgUrl} from './firebase.js'
 
 validateToken()
 
@@ -31,17 +33,18 @@ const sendAlert = (message, type) => {
 }
 
 const createAdminCatalogCard = async (product) => {
-  const { sku } = product
+  const { sku, img } = product
 
   const divCard = document.createElement('div')
   divCard.className = 'd-flex flex-column m-1'
   divCard.style = 'width:10rem'
   divCard.id = `productCard_${sku}`
 
-  const img = document.createElement('img')
-  img.className = 'img-fluid m-1'
-  img.src = await assignImg(sku)
-  divCard.appendChild(img)
+  const imgCard = document.createElement('img')
+  imgCard.className = 'img-fluid m-1'
+  imgCard.src = await getImgUrl(img)
+  imgCard.id = `adminCard_${sku}`
+  divCard.appendChild(imgCard)
 
   const modalButton = document.createElement('button')
   modalButton.className = 'btn btn-primary m-1'
@@ -66,12 +69,15 @@ const renderModalForm = async (id) => {
   let category = 'JCM'
   let price = 0
   let stock = { xxs: 0, xs: 0, s: 0, m: 0, l: 0, xl: 0, xxl: 0, xxxl: 0 }
+  let img = 'images/placeholder-min.jpg'
 
   document.getElementById('modalSKU').removeAttribute('disabled', '')
   document.getElementById('modalDeleteButton').value = id
+  document.getElementById('modalImage').src = `${imgFolderCatalog}placeholder-min.jpg`
+  document.getElementById('modalFile').value  = ''
 
   if (id) {
-    ({ sku, categoryName, category, price, stock } = allProdructs[id])
+    ({ sku, categoryName, category, price, stock, img } = allProdructs[id])
     document.getElementById('modalSKU').setAttribute('disabled', '')
     document.getElementById('modalPostButton').classList.add('d-none')
     document.getElementById('modalPutButton').classList.remove('d-none')
@@ -81,7 +87,6 @@ const renderModalForm = async (id) => {
   }
 
   document.getElementById('modalTitle').textContent = `Modelo ${sku}`
-  document.getElementById('modalImage').src = await assignImg(sku)
   document.getElementById('modalPrice').value = price
   document.getElementById('modalSKU').value = sku
 
@@ -117,34 +122,34 @@ const renderModalForm = async (id) => {
     const input = element.getElementsByTagName('input')[0]
     input.value = stock[span.textContent.toLocaleLowerCase()]
   })
+
+  document.getElementById('modalImage').src = await getImgUrl(img)
 }
-/*
-const uploadFile = async (file) => {
-  const storageRef = firestore.storage().ref().child(`images/${file.name}`)
 
-  await storageRef.put(file)
-
-  return storageRef
-} */
 
 const sendData = async (method, buttonId) => {
   validateToken()
   const aupdateButton = document.getElementById(buttonId)
   const token = userToken()
   aupdateButton.classList.add('disabled')
+  var imgPath = ''
 
-  /*
   const imgFile = document.getElementById('modalFile').files[0]
   if (imgFile) {
     const imgFileRef = await uploadFile(imgFile)
-    console.log(imgFileRef)
-  } */
+    imgPath = imgFileRef.fullPath
+  }else {
+    imgPath = allProdructs[document.getElementById('modalSKU').value].img
+  }
+
+  console.log(imgPath)
 
   const item = JSON.stringify({
     sku: document.getElementById('modalSKU').value,
     category: document.getElementById('categorySelector').value,
     categoryName: document.getElementById('categoryNameSelector').value,
     price: document.getElementById('modalPrice').value,
+    img : imgPath,
     stock: {
       xxs: document.getElementById('modalXXS').value,
       xs: document.getElementById('modalXS').value,
@@ -165,7 +170,7 @@ const sendData = async (method, buttonId) => {
     body: item
   })
     .then(response => response.json())
-    .then(json => {
+    .then( async json => {
       aupdateButton.classList.remove('disabled')
       if (Object.prototype.hasOwnProperty.call(json, 'error')) {
         sendAlert('Error al guardar', 'danger')
@@ -173,9 +178,13 @@ const sendData = async (method, buttonId) => {
         document.getElementById('btnDismiss').click()
         sendAlert('Guardado correctamente', 'success')
         allProdructs[json.sku] = json
+        console.log(allProdructs[json.sku])
+        
         if (method === 'POST') {
-          createAdminCatalogCard(json)
+          await createAdminCatalogCard(json)
         }
+        document.getElementById(`adminCard_${json.sku}`).src = await getImgUrl(json.img)
+        console.log(json.img)
       }
     })
 }

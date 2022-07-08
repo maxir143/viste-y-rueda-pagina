@@ -60,18 +60,6 @@ const deleteTimeOut = (element, time) => {
   }, time)
 }
 
-const assignImg = async (id) => {
-  let imgPath = `${imgFolderCatalog}${id}-min.jpg`
-  await fetch(`${imgFolderCatalog}${id}-min.jpg`, { method: 'HEAD' })
-    .then(response => {
-      if (response.status !== 200) {
-        imgPath = `${imgFolderCatalog}placeholder-min.jpg`
-      }
-    })
-
-  return imgPath
-}
-
 export {
   imgFolderCatalog,
   urlBaseWhatsApp,
@@ -80,6 +68,5 @@ export {
   categories,
   userToken,
   validateToken,
-  assignImg,
   deleteTimeOut
 }

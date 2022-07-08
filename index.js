@@ -2,16 +2,17 @@ import {
   imgFolderCatalog,
   urlBaseWhatsApp,
   urlAPI,
-  categoriesNames,
-  assignImg
+  categoriesNames
 } from './helpers.js'
+
+import {getImgUrl} from './firebase.js'
 
 let allProdructs = {}
 let sizeSelected = 'ALL'
 let categorySelected = 'ALL'
 
 const createShopingItem = async (item) => {
-  const { sku, stock } = item
+  const { sku, stock, img } = item
 
   const divShopingCart = document.createElement('div')
   divShopingCart.id = `${sku}_cart`
@@ -19,7 +20,7 @@ const createShopingItem = async (item) => {
 
   const imgSC = document.createElement('img')
   imgSC.className = 'w-25'
-  imgSC.src = await assignImg(sku)
+  imgSC.src = await getImgUrl(img)
   divShopingCart.appendChild(imgSC)
 
   const h4SC = document.createElement('h4')
@@ -110,9 +111,9 @@ const addToCart = (item) => {
 }
 
 const createCardImgCatalog = async (product) => {
-  const { sku, categoryName, price, stock } = product
+  const { sku, categoryName, price, stock, img } = product
 
-  const imgSRC = await assignImg(sku)
+  const imgSRC = await getImgUrl(img)
 
   if (imgSRC === `${imgFolderCatalog}placeholder-min.jpg`) return
 
