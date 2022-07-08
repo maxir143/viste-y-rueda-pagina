@@ -12,7 +12,8 @@ let sizeSelected = 'ALL'
 let categorySelected = 'ALL'
 
 const createShopingItem = async (item) => {
-  const { sku, stock, img } = item
+  const { sku, stock } = item
+  const img = allProdructs[sku].img 
 
   const divShopingCart = document.createElement('div')
   divShopingCart.id = `${sku}_cart`
@@ -60,7 +61,7 @@ const renderShopingCart = async (items) => {
     document.getElementById('modalCartBody').innerHTML = 'Sin articulos ...'
   }
   items.forEach((stock, sku) => {
-    createShopingItem({ sku, stock })
+    createShopingItem({ sku, stock})
       .then(newShopingItem => {
         document.getElementById('modalCartBody').appendChild(newShopingItem)
         stock.forEach((size) => {
