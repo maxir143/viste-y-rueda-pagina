@@ -195,7 +195,7 @@ const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
         }
         if (product.stock[sizeSelected] <= 0 && sizeSelected !== 'ALL') return
         itemCount++
-        setTimeout(()=>createCardImgCatalog(product), 200 *itemCount)
+        createCardImgCatalog(product)
       }
     }
   })
