@@ -161,8 +161,7 @@ const createCardImgCatalog = async (product) => {
       let classes = 'btn btn-outline-success btn-sm flex-fill mx-1'
       if (shoppingCart.has(sku)) {
         const currentItem = shoppingCart.get(sku)
-        console.log(currentItem)
-        if (currentItem.has(size)) {
+        if (currentItem.includes(size)) {
           classes = 'btn btn-secondary btn-sm flex-fill mx-1'
           aAddToCart.setAttribute('disabled', '')
         }
