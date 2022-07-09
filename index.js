@@ -119,7 +119,7 @@ const createCardImgCatalog = async (product) => {
   if (imgSRC === `${imgFolderCatalog}placeholder-min.jpg`) return
 
   const divCard = document.createElement('div')
-  divCard.className = 'card m-3'
+  divCard.className = 'card m-3 display-card'
   divCard.style = 'width: 18rem;'
 
   const cardImgTop = document.createElement('img')
@@ -194,8 +194,8 @@ const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
           if (outOfStock(product.stock) === true) return
         }
         if (product.stock[sizeSelected] <= 0 && sizeSelected !== 'ALL') return
-        createCardImgCatalog(product)
         itemCount++
+        setTimeout(()=>createCardImgCatalog(product), 200 *itemCount)
       }
     }
   })

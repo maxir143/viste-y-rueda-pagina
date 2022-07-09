@@ -13,3 +13,20 @@
 	box-shadow: 5px 5px 10px rgb(129, 128, 128);
 }
 
+
+.display-card {
+	animation: apper 2s forwards 
+	
+}
+
+@keyframes apper {
+  0% {
+    opacity: 0%;
+  }
+	50% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
