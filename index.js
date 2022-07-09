@@ -13,7 +13,7 @@ let categorySelected = 'ALL'
 
 const createShopingItem = async (item) => {
   const { sku, stock } = item
-  const img = allProdructs.filter(product => product.sku == sku)[0].img
+  const img = allProdructs.filter(product => product.sku === parseInt(sku))[0].img
 
   const divShopingCart = document.createElement('div')
   divShopingCart.id = `${sku}_cart`
@@ -65,8 +65,11 @@ const renderShopingCart = async (items) => {
       .then(newShopingItem => {
         document.getElementById('modalCartBody').appendChild(newShopingItem)
         stock.forEach((size) => {
-          document.getElementById(`${sku}_${size}`).setAttribute('disabled', '')
-          document.getElementById(`${sku}_${size}`).className = 'btn btn-secondary btn-sm flex-fill mx-1'
+          const cardCatalogDisplay = document.getElementById(`${sku}_${size}`)
+          if (cardCatalogDisplay) {
+            cardCatalogDisplay.setAttribute('disabled', '')
+            cardCatalogDisplay.className = 'btn btn-secondary btn-sm flex-fill mx-1'
+          }
         })
       })
   })
@@ -85,11 +88,13 @@ const delCartItem = (item) => {
         shoppingCart.delete(sku)
       }
     }
-    document.getElementById(`${sku}_${size}`).removeAttribute('disabled', '')
-    document.getElementById(`${sku}_${size}`).className = 'btn btn-outline-success btn-sm flex-fill mx-1'
+    const cardCatalogDisplay = document.getElementById(`${sku}_${size}`)
+    if (cardCatalogDisplay) {
+      cardCatalogDisplay.removeAttribute('disabled', '')
+      cardCatalogDisplay.className = 'btn btn-outline-success btn-sm flex-fill mx-1'
+    }
   })
   document.getElementById(`${sku}_cart`).remove()
-
   document.getElementsByName('shopingCartCount')[0].textContent = shoppingCart.size
 
   saveShopingCart(shoppingCart)
@@ -156,6 +161,7 @@ const createCardImgCatalog = async (product) => {
       let classes = 'btn btn-outline-success btn-sm flex-fill mx-1'
       if (shoppingCart.has(sku)) {
         const currentItem = shoppingCart.get(sku)
+        console.log(currentItem)
         if (currentItem.has(size)) {
           classes = 'btn btn-secondary btn-sm flex-fill mx-1'
           aAddToCart.setAttribute('disabled', '')
@@ -199,7 +205,11 @@ const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
       }
     }
   })
-  if (itemCount <= 0) document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
+  if (itemCount <= 0) {
+    document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
+  } else {
+    renderShopingCart(shoppingCart)
+  }
 }
 
 const filterSetSize = (size) => {
@@ -245,5 +255,4 @@ fetch(`${urlAPI}/products`)
   .then((json) => {
     allProdructs = json
     renderCatalog(100, false)
-    renderShopingCart(shoppingCart)
   })
