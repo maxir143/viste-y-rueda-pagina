@@ -200,7 +200,7 @@ const deleteProduct = (id) => {
   })
     .then(response => {
       if (response.status === 304) {
-        return sendAlert('No se encontro el prodcuto', 'warning')
+        return sendAlert('No se encontro el producto', 'warning')
       }
       if (response.status === 204) {
         document.getElementById(`productCard_${id}`).remove()
