@@ -23,10 +23,10 @@
 
 
 .display-card {
-	animation: apper 1s forwards 
+	animation: fade-in 1s forwards 
 }
 
-@keyframes apper {
+@keyframes fade-in  {
 	0% {
     opacity: 0%;
   }

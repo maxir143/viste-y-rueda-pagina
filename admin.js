@@ -142,8 +142,6 @@ const sendData = async (method, buttonId) => {
     imgPath = allProdructs[document.getElementById('modalSKU').value].img
   }
 
-  console.log(imgPath)
-
   const item = JSON.stringify({
     sku: document.getElementById('modalSKU').value,
     category: document.getElementById('categorySelector').value,

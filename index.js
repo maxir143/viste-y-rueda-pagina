@@ -222,6 +222,8 @@ const filterSetCategory = (category) => {
   categorySelected = category
   renderCatalog(100, false)
 
+  document.getElementById('navbarSupportedContent').classList.remove('show')
+
   document.getElementsByName('Filter').forEach((button) => {
     if (button.id === category) {
       button.classList.add('active')
