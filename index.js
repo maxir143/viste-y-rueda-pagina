@@ -124,8 +124,8 @@ const createCardImgCatalog = async (product) => {
   if (imgSRC === `${imgFolderCatalog}placeholder-min.jpg`) return
 
   const divCard = document.createElement('div')
-  divCard.className = 'card m-3 display-card'
-  divCard.style = 'width: 12rem;'
+  divCard.className = 'card m-2 display-card'
+  divCard.style = 'width: 22rem; max-width: 300px;'
 
   const cardImgTop = document.createElement('img')
   cardImgTop.className = 'card-img-top'
