@@ -125,7 +125,7 @@ const createCardImgCatalog = async (product) => {
 
   const divCard = document.createElement('div')
   divCard.className = 'card m-3 display-card'
-  divCard.style = 'width: 18rem;'
+  divCard.style = 'width: 12rem;'
 
   const cardImgTop = document.createElement('img')
   cardImgTop.className = 'card-img-top'
@@ -149,7 +149,7 @@ const createCardImgCatalog = async (product) => {
 
   const showSizeButtons = (sizes) => {
     const divSizeButtons = document.createElement('div')
-    divSizeButtons.className = 'd-flex flex-fill justify-content-around align-items-stretch p-2 text-center btn-group'
+    divSizeButtons.className = 'd-flex flex-wrap flex-fill justify-content-around align-items-stretch p-2 text-center btn-group'
 
     const pSizeButtons = document.createElement('p')
     pSizeButtons.className = 'align-self-center m-0'
@@ -158,7 +158,7 @@ const createCardImgCatalog = async (product) => {
 
     for (const [size, value] of Object.entries(sizes)) {
       const aAddToCart = document.createElement('button')
-      let classes = 'btn btn-outline-success btn-sm flex-fill mx-1'
+      let classes = 'btn btn-outline-success btn-sm flex-fill m-1'
       if (shoppingCart.has(sku)) {
         const currentItem = shoppingCart.get(sku)
         if (currentItem.includes(size)) {
@@ -192,7 +192,7 @@ const outOfStock = (sizes) => {
 const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
   document.getElementsByClassName('display-catalog')[0].innerHTML = ''
   let itemCount = 0
-  allProdructs.forEach(product => {
+  allProdructs.map(async (product, index) => {
     if (maxItems > itemCount) {
       if (categorySelected === product.category || categorySelected === 'ALL') {
         if (showOutOfStock === false) {
@@ -200,10 +200,11 @@ const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
         }
         if (product.stock[sizeSelected] <= 0 && sizeSelected !== 'ALL') return
         itemCount++
-        createCardImgCatalog(product)
+        await createCardImgCatalog(product)
       }
     }
   })
+  console.log('holi')
   if (itemCount <= 0) {
     document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
   } else {
