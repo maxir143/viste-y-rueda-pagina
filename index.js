@@ -125,7 +125,7 @@ const createCardImgCatalog = async (product) => {
 
   const divCard = document.createElement('div')
   divCard.className = 'card m-2 display-card'
-  divCard.style = 'width: 22rem; max-width: 300px;'
+  divCard.style = 'width: 22rem;'
 
   const cardImgTop = document.createElement('img')
   cardImgTop.className = 'card-img-top'
