@@ -204,7 +204,6 @@ const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
       }
     }
   })
-  console.log('holi')
   if (itemCount <= 0) {
     document.getElementById('display-catalog').innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
   } else {
