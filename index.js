@@ -177,7 +177,7 @@ const createCardImgCatalog = async (product) => {
   }
   showSizeButtons(stock)
 
-  return document.getElementsByClassName('display-catalog')[0].appendChild(divCard)
+  return document.getElementById('display-catalog').appendChild(divCard)
 }
 
 const outOfStock = (sizes) => {
@@ -190,7 +190,7 @@ const outOfStock = (sizes) => {
 }
 
 const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
-  document.getElementsByClassName('display-catalog')[0].innerHTML = ''
+  document.getElementById('display-catalog').innerHTML = ''
   let itemCount = 0
   allProdructs.map(async (product, index) => {
     if (maxItems > itemCount) {
@@ -206,7 +206,7 @@ const renderCatalog = (maxItems = 10, showOutOfStock = false) => {
   })
   console.log('holi')
   if (itemCount <= 0) {
-    document.getElementsByClassName('display-catalog')[0].innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
+    document.getElementById('display-catalog').innerHTML = '<h2 class="m-5">No hay productos aun ...</h2>'
   } else {
     renderShopingCart(shoppingCart)
   }
