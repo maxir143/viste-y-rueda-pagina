@@ -257,3 +257,8 @@ fetch(`${urlAPI}/products`)
     allProdructs = json
     renderCatalog(100, false)
   })
+
+
+window.onload = function() {
+    window.location.href = 'https://www.visteyrueda.com.mx/'
+}
